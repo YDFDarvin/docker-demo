@@ -14,7 +14,7 @@ node {
      }
    }
    stage('test with a DB') {
-     def postgres = docker.image('postgres').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes") 
+     def postgres = docker.image('postgres').run("-e POSTGRES_PASSWORD=1415") 
      def myTestContainer = docker.image('alpine:3.11')
      myTestContainer.pull()
      myTestContainer.inside("--link ${postgres.id}:postgres") { // using linking, mysql will be available at host: postgres, port: 5432
