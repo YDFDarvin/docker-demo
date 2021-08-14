@@ -17,14 +17,14 @@ node {
      }
    }
    stage('test with a DB') {
-     def postgres = docker.image('postgres').run("-e POSTGRES_PASSWORD=1415") 
-     def myTestContainer = docker.image('alpine:3.11')
-     myTestContainer.pull()
-     myTestContainer.inside("--link ${postgres.id}:postgres") { // using linking, mysql will be available at host: postgres, port: 5432
-          sh 'npm install --only=dev' 
-          sh 'npm test'                     
-     }                                   
-     postgres.stop()
+      def mysql = docker.image('mysql').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes") 
+      def myTestContainer = docker.image('node:4.6')
+      myTestContainer.pull()
+      myTestContainer.inside("--link ${mysql.id}:mysql") { // using linking, mysql will be available at host: mysql, port: 3306
+         sh 'npm install --only=dev' 
+         sh 'npm test'                     
+      }                                   
+      mysql.stop()
    }                                     
    stage('docker build/push') {            
      docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
