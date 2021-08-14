@@ -5,7 +5,7 @@ pipeline {
       args '-p 3000:3000'
     }
   }
-  stages {
+  steps {
     def commit_id
     stage('Preparation ENV flow') {
       checkout scm
