@@ -5,11 +5,13 @@ pipeline {
     }
   }
   stages {
-    def commit_id
     stage('Preparation ENV flow') {
-      checkout scm
-      sh "git rev-parse --short HEAD > .git/commit-id"
-      commit_id = readFile('.git/commit-id').trim()
+      steps {
+        def commit_id
+        checkout scm
+        sh "git rev-parse --short HEAD > .git/commit-id"
+        commit_id = readFile('.git/commit-id').trim()
+      }
     }
     stage('Testing flow') {
       def myTestContainer = docker.image('alpine:3.11')
